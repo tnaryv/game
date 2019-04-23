@@ -1,0 +1,242 @@
+<html>
+
+<head>
+  <script src="p5.min.js"></script>
+  <script src="jumper.js"></script>
+  <script src="predator.js"></script>
+  <script src="badFish2.js"></script>
+  <script src="badFish.js"></script>
+  <script src="predator2.js"></script>
+  <script src="badFish3.js"></script>
+  <script src="p5.collide2d.min.js"></script>
+  <script language="javascript" type="text/javascript" src="p5.dom.min.js"></script>
+  <script language="javascript" type="text/javascript" src="p5.sound.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Nosifer' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Alegreya Sans SC' rel='stylesheet'>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+
+      background-image: url("ocean.jpg");
+      background-size: cover;
+      z-index: -1;      
+    }
+    #pointCount {
+      width: 70px;
+      height: 80px;
+      font-size: 30px;
+      float: left;
+      color: white;
+    }
+    #sandFloor {
+      width: 100vw;
+      height: 70px;
+      background-image: url("sandFloor.png");
+      background-size: cover;
+    }
+    #lose {
+      font-size: 5vw;
+      color: white;
+      font-family: 'Nosifer';
+      text-align: center;
+      text-shadow: 4px 5px 0px rgb(230, 0, 0);
+      margin-top: -90vh;
+    }
+    #playAgain {
+      width: 40vw;
+      height: 10vh;
+      font-size: 4vw;
+      color:  white;
+      border-radius: 8px 8px 8px 8px;
+      font-family: 'Alegreya Sans SC';
+      margin-left: 30vw;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var jumper = new jumper();
+    var predator = new predator();
+    var badFish = new badFish();
+    var badFish2 = new badFish2();
+    var predator2 = new predator2();
+    var badFish3 = new badFish3();
+    var hit = false;
+    var hit2 = false;
+    var hit3 = false;
+    var hit4 = false;
+    var hit5 = false;
+    var scoreDiv;
+    //var backGround;
+    var sandFloor;
+    var sharkFace = "right";
+    var babyShark;
+    var dead;
+
+    function preload() {
+      //backGround = loadImage("ocean.jpg");
+      //backGround.resize(w,h);
+      shark = loadImage("shark.png");
+      shark2 = loadImage("shark.gif");
+      //goodFishie = loadImage("goodFish.png");
+      badFishie = loadImage("badFish.png");
+      //shinyDiamond = loadImage("diamond.png");
+      predatorPic = loadImage("predator.png");
+      babyShark = loadSound("babySharkRemix.mp3")
+      dead = loadSound("dead.mp3")
+    }
+    function setup() {
+      createCanvas(w,h);
+      scoreDiv = createDiv();
+      scoreDiv.id("pointCount");
+      scoreDiv.position(0,0);
+      floorDiv = createDiv()
+      floorDiv.id("sandFloor");
+      floorDiv.position(0, h-70);
+      shark.loadPixels();
+      shark2.loadPixels();
+      //goodFishie.loadPixels();
+      badFishie.loadPixels();
+      //shinyDiamond.loadPixels();
+      predatorPic.loadPixels();
+      babyShark.play();
+    }
+    
+    function draw() {
+      clear();
+      noStroke();
+      //imageMode(CORNER);
+      //background(backGround);
+      jumper.show();
+      //jumper.show2();
+      //jumper.show3();
+      jumper.move();
+      jumper.update();
+      predator.show();
+      predator.update();
+      badFish.show();
+      badFish.update();
+      badFish2.show();
+      badFish2.update();
+      predator2.show();
+      predator2.update();
+      badFish3.show();
+      badFish3.update();
+
+      hit = collideRectRect(
+        predator.x,
+        predator.y,
+        predator.width,
+        predator.height,
+        jumper.x,
+        jumper.y,
+        (jumper.width - 10),
+        (jumper.height - 10));
+      if (hit === true) {
+        noLoop();
+        babyShark.stop();
+        dead.play();
+        lose = createDiv("YOU GOT NOMED");
+        lose.id("lose");
+
+        playAgain = createDiv("Press 'r' to play again");
+        playAgain.id("playAgain");
+      }
+      hit2 = collideRectRect(
+        badFish.x,
+        badFish.y,
+        badFish.width,
+        badFish.height,
+        jumper.x,
+        jumper.y,
+        jumper.width - 15,
+        jumper.height - 15);
+      if (hit2 === true) {
+        noLoop()
+        babyShark.stop();
+        dead.play();
+        lose = createDiv("YOU GOT NOMED");
+        lose.id("lose");
+
+        playAgain = createDiv("Press 'r' to play again");
+        playAgain.id("playAgain");
+      }
+      hit3 = collideRectRect(
+        badFish2.x,
+        badFish2.y,
+        badFish2.width,
+        badFish2.height,
+        jumper.x,
+        jumper.y,
+        jumper.width - 15,
+        jumper.height - 15);
+      if (hit3 === true) {
+        noLoop()
+        babyShark.stop();
+        dead.play();
+        lose = createDiv("YOU GOT NOMED");
+        lose.id("lose");
+
+        playAgain = createDiv("Press 'r' to play again");
+        playAgain.id("playAgain");
+      }
+      hit4 = collideRectRect(
+        predator2.x,
+        predator2.y,
+        (predator2.width - 20),
+        (predator2.height - 20),
+        jumper.x,
+        jumper.y,
+        jumper.width - 5,
+        jumper.height - 5);
+      if (hit4 === true) {
+        noLoop()
+        babyShark.stop();
+        dead.play();
+        lose = createDiv("YOU GOT NOMED");
+        lose.id("lose");
+
+        playAgain = createDiv("Press 'r' to play again");
+        playAgain.id("playAgain");
+      }
+      hit5 = collideRectRect(
+        badFish3.x,
+        badFish3.y,
+        badFish3.width,
+        badFish3.height,
+        jumper.x,
+        jumper.y,
+        jumper.width - 15,
+        jumper.height - 15);
+      if (hit5 === true) {
+        noLoop()
+        babyShark.stop();
+        dead.play();
+        lose = createDiv("YOU GOT NOMED");
+        lose.id("lose");
+
+        playAgain = createDiv("Press 'r' to play again");
+        playAgain.id("playAgain");
+      }
+    }
+    function replay() {
+      window.location.reload();
+    }
+    function keyPressed() {
+      if (keyCode == 82) {
+        replay();
+      }
+      if (keyCode === 32) {
+      jumper.up();
+    }
+    }
+  </script>
+</body>
+
+</html> 
